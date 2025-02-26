@@ -64,8 +64,10 @@ def enviar_email():
 
         corpo_email = corpo_email.replace("{saudacao}", definir_saudacao())
 
-        corpo_email = corpo_email.replace("{empresa}", empresa)
-        corpo_email = corpo_email.replace("{mes}", mes)
+        if empresa:
+            corpo_email = corpo_email.replace("{empresa}", empresa)
+        if mes: 
+            corpo_email = corpo_email.replace("{mes}", mes)
 
         # Enviar e-mail para cada destinatário separadamente
         if modelo == "informe_tecnico":
