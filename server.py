@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from email_service import enviar_informe_tecnico, enviar_tentativa_contato
+from email_service import enviar_informe_tecnico, enviar_tentativa_contato, enviar_empresa_nao_atende
 import os
 from datetime import datetime
 
@@ -51,6 +51,7 @@ def enviar_email():
         assunto = dados.get("assunto")
         departamento = dados.get("departamento")
         modelo = dados.get("modelo")
+        mes = dados.get("mes")
         empresa = dados.get("empresa")
 
         if not destinatarios or not assunto or not departamento or not modelo:
@@ -63,12 +64,17 @@ def enviar_email():
 
         corpo_email = corpo_email.replace("{saudacao}", definir_saudacao())
 
+        corpo_email = corpo_email.replace("{empresa}", empresa)
+        corpo_email = corpo_email.replace("{mes}", mes)
+
         # Enviar e-mail para cada destinatário separadamente
         if modelo == "informe_tecnico":
             for destinatario in destinatarios:
                 enviar_informe_tecnico(destinatario, copia, assunto, corpo_email)
         if modelo == "tentativa_contato":
-            enviar_tentativa_contato(destinatarios, copia, assunto, corpo_email, empresa)
+            enviar_tentativa_contato(destinatarios, copia, assunto, corpo_email)
+        if modelo == "empresa_nao_atende":
+            enviar_empresa_nao_atende(destinatarios, copia, assunto, corpo_email)
 
 
         return jsonify({"mensagem": "E-mails enviados com sucesso!"})

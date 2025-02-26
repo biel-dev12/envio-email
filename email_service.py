@@ -42,7 +42,7 @@ def enviar_informe_tecnico(destinatario, copia, assunto, corpo_email):
     except Exception as e:
         print(f"Erro ao enviar o e-mail: {e}")
 
-def enviar_tentativa_contato(destinatario, copia, assunto, corpo_email, empresa):
+def enviar_tentativa_contato(destinatario, copia, assunto, corpo_email):
     try:
         pythoncom.CoInitialize()  # Inicializa o COM
         # Cria o objeto do Outlook
@@ -70,3 +70,26 @@ def enviar_tentativa_contato(destinatario, copia, assunto, corpo_email, empresa)
 
     except Exception as e:
         print(f"Erro ao enviar o e-mail: {e}")        
+
+def enviar_empresa_nao_atende(destinatario, copia, assunto, corpo_email):
+    try:
+        pythoncom.CoInitialize()  # Inicializa o COM
+        outlook = win32com.client.Dispatch("Outlook.Application")
+        mensagem = outlook.CreateItem(0)
+
+        mensagem.Display()
+        assinatura = mensagem.HTMLBody  # Captura a assinatura padrão do Outlook
+
+        mensagem.To = destinatario
+        if copia:
+            mensagem.CC = "; ".join([email.strip() for email in copia if email.strip()])
+        else:
+            mensagem.CC = ""
+
+        mensagem.Subject = assunto
+        mensagem.HTMLBody = corpo_email + assinatura  # Mantém a assinatura padrão
+
+        mensagem.Send()
+
+    except Exception as e:
+        print(f"Erro ao enviar o e-mail: {e}")
