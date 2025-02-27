@@ -54,7 +54,14 @@ def enviar_email():
         mes = dados.get("mes")
         empresa = dados.get("empresa")
 
-        if not destinatarios or not assunto or not departamento or not modelo:
+        dest = 0
+        for d in destinatarios:
+            if d != "":
+                dest += 1
+
+        print("quantidade de destinatarios: ", dest)
+
+        if dest == 0 or not assunto or not departamento or not modelo:
             return jsonify({"erro": "Campos obrigatórios faltando"}), 400
 
         corpo_email = EMAIL_MODELOS.get(departamento, {}).get(modelo, "")
