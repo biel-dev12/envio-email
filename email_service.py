@@ -26,15 +26,18 @@ def enviar_informe_tecnico(destinatario, copia, assunto, corpo_email):
 
         # Caminhos dos anexos
         attachment1 = r"U:\Depto Técnico\00. Modelos\09. Emails\qrcode_google.jpg"
-        attachment2 = r"U:\Depto Técnico\01. Empresas\Z. Empresas de Fevereiro de 2025\Z. Mensagens Padrão\Informe Técnico.pdf"
-        attachment3 = r"U:\Depto Técnico\01. Empresas\Z. Empresas de Fevereiro de 2025\Z. Mensagens Padrão\Modelo de Ficha de EPI - Equipamento de Proteção Individual.docx"
-        attachment4 = r"U:\Depto Técnico\01. Empresas\Z. Empresas de Fevereiro de 2025\Z. Mensagens Padrão\Modelo de OS - Ordem de Serviço de Saúde e Segurança.docx"
+        attachment2 = r"U:\Depto Técnico\00. Modelos\20. Informe Técnico\Reg001.01.A IAT - Inspeção de Avaliação Técnica, Revisão 00, 01_05_2023, Informe Técnico.pdf"
+        attachment3 = r"U:\Depto Técnico\00. Modelos\20. Informe Técnico\A09 - Modelo de Ficha de EPI - Equipamento de Proteção Individual, 06-04-2022, Revisão 00.docx"
+        attachment4 = r"U:\Depto Técnico\00. Modelos\20. Informe Técnico\A08 - Modelo de OS - Ordem de Serviço de Saúde e Segurança, 06-04-2022, Revisão 00.docx"
 
         # Adicionar anexos
-        mensagem.Attachments.Add(attachment1)
+        attachment = mensagem.Attachments.Add(attachment1)
+        attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001E", "qrcode_image")
+
         mensagem.Attachments.Add(attachment2)
         mensagem.Attachments.Add(attachment3)
         mensagem.Attachments.Add(attachment4)
+        
 
         # Envia o e-mail
         mensagem.Send()
